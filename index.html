@@ -128,6 +128,8 @@ width and height are optional.
 				 player.pauseVideo();
                  var time = player.playerInfo.currentTime; 
                  console.log(time);
+				 document.getElementById('dialog').style.display='none';
+
                  window.open('https://www.youtube.com/watch?autoplay=1&v=T9CTbO0r-QE&t='+time+'s', 'window name', 'window settings');
                  return true;
             });
