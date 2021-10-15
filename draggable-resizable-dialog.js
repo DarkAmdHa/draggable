@@ -1,3 +1,24 @@
+var player = videojs("vid1");
+console.log(player);
+
+_playDialogButton = document.getElementById("imgDraggable");
+var dialog;
+function showDialog() {
+  _playDialogButton.disabled = true;
+  if (!dialog) {
+    var id = "dialog";
+    // Instanciate the Dialog Box
+    dialog = new DialogBox(id, callbackDialog);
+  }
+  // Show Dialog Box
+  dialog.showDialog();
+
+  // Receive result from Dialog Box
+  function callbackDialog(btnName) {
+    _playDialogButton.disabled = false;
+  }
+}
+
 function DialogBox(id, callback) {
   var _minW = 100, // The exact value get's calculated
     _minH = 1, // The exact value get's calculated
@@ -359,6 +380,7 @@ function DialogBox(id, callback) {
       if (btn.parentElement.name === "close") {
         setTimeout(() => {
           _dialog.style.transform = "scale(0)";
+          player.pause();
         }, 1);
         setTimeout(() => {
           _dialog.style.display = "none";
@@ -408,6 +430,7 @@ function DialogBox(id, callback) {
       _dialog.style.display = "block";
       setTimeout(() => {
         _dialog.style.transform = "none";
+        player.play();
       }, 1);
       if (_buttons[1])
         // buttons are optional
