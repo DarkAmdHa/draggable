@@ -1,16 +1,8 @@
-/*
- * Pure JavaScript for Draggable and Risizable Dialog Box
- *
- * Designed by ZulNs, @Gorontalo, Indonesia, 7 June 2017
- * Extended by FrankBuchholz, Germany, 2019
- */
-// Encapsulate variables and functions to allow instanciation of multiple dialog boxes
 function DialogBox(id, callback) {
   var _minW = 100, // The exact value get's calculated
     _minH = 1, // The exact value get's calculated
     _resizePixel = 5,
     _hasEventListeners = !!window.addEventListener,
-    _parent,
     _dialog,
     _dialogTitle,
     _dialogContent,
@@ -27,12 +19,10 @@ function DialogBox(id, callback) {
     _isResize = false,
     _isButton = false,
     _isButtonHovered = false, // Let's use standard hover (see css)
-    //_isClickEvent = true, // Showing several dialog boxes work better if I do not use this variable
     _resizeMode = "",
     _whichButton,
     _buttons,
     _tabBoundary,
-    _callback, // Callback function which transfers the name of the selected button to the caller
     _zIndex, // Initial zIndex of this dialog box
     _zIndexFlag = false, // Bring this dialog box to front
     _setCursor, // Forward declaration to get access to this function in the closure
@@ -363,13 +353,17 @@ function DialogBox(id, callback) {
       _isButton = false;
       _whichClick(_whichButton);
     }
-    //else
-    //_isClickEvent = true;
     return _returnEvent(evt);
   }),
     (_whichClick = function (btn) {
-      _dialog.style.display = "none";
-      if (_callback) _callback(btn.name);
+      if (btn.parentElement.name === "close") {
+        setTimeout(() => {
+          _dialog.style.transform = "scale(0)";
+        }, 1);
+        setTimeout(() => {
+          _dialog.style.display = "none";
+        }, 400);
+      }
     }),
     (_getOffset = function (elm) {
       var rect = elm.getBoundingClientRect(),
@@ -392,13 +386,6 @@ function DialogBox(id, callback) {
       var _dialogContentStyle = getComputedStyle(_dialogContent),
         _dialogButtonPaneStyle,
         _dialogButtonPaneStyleBefore;
-      if (_buttons.length > 1) {
-        _dialogButtonPaneStyle = getComputedStyle(_dialogButtonPane);
-        _dialogButtonPaneStyleBefore = getComputedStyle(
-          _dialogButtonPane,
-          ":before"
-        );
-      }
 
       var w =
           _dialog.clientWidth -
@@ -407,13 +394,7 @@ function DialogBox(id, callback) {
         h =
           _dialog.clientHeight -
           (parseInt(_dialogContentStyle.top) + // .dialog .content { top: 48px }
-            16 + // ?
-            (_buttons.length > 1
-              ? +parseInt(_dialogButtonPaneStyleBefore.borderBottom) - // .dialog .buttonpane:before { border-bottom: 1px; }
-                parseInt(_dialogButtonPaneStyleBefore.top) + // .dialog .buttonpane:before { height: 0; top: -16px; }
-                parseInt(_dialogButtonPaneStyle.height) + // .dialog .buttonset button { height: 32px; }
-                parseInt(_dialogButtonPaneStyle.bottom) // .dialog .buttonpane { bottom: 16px; }
-              : 0)); // Ensure to get minimal height
+            16); // Ensure to get minimal height
       _dialogContent.style.width = w + "px";
       _dialogContent.style.height = h + "px";
 
@@ -425,6 +406,9 @@ function DialogBox(id, callback) {
     }),
     (_showDialog = function () {
       _dialog.style.display = "block";
+      setTimeout(() => {
+        _dialog.style.transform = "none";
+      }, 1);
       if (_buttons[1])
         // buttons are optional
         _buttons[1].focus();
@@ -450,44 +434,16 @@ function DialogBox(id, callback) {
         _dialogButtonPaneStyleBefore,
         _dialogButtonStyle;
       if (_buttons.length > 1) {
-        _dialogButtonPaneStyle = getComputedStyle(_dialogButtonPane);
-        _dialogButtonPaneStyleBefore = getComputedStyle(
-          _dialogButtonPane,
-          ":before"
-        );
         _dialogButtonStyle = getComputedStyle(_buttons[1]);
       }
 
-      // Calculate minimal width
-      _minW = Math.max(
-        _dialog.clientWidth,
-        _minW,
-        +(_buttons.length > 1
-          ? +(_buttons.length - 1) * parseInt(_dialogButtonStyle.width) + // .dialog .buttonset button { width: 64px; }
-            (_buttons.length - 1 - 1) * 16 + // .dialog .buttonset button { margin-left: 16px; } // but not for first-child
-            ((_buttons.length - 1 - 1) * 16) / 2 // The formula is not correct, however, with fixed value 16 for margin-left: 16px it works
-          : 0)
-      );
-      _dialog.style.width = _minW + "px";
+      //  minimal width
 
-      // Calculate minimal height
-      _minH = Math.max(
-        _dialog.clientHeight,
-        _minH,
-        +parseInt(_dialogContentStyle.top) + // .dialog .content { top: 48px }
-          2 * parseInt(_dialogStyle.border) + // .dialog { border: 1px }
-          16 + // ?
-          200 + // .p { margin-block-start: 1em; } // default
-          12 + // .dialog { font-size: 12px; } // 1em = 12px
-          12 + // .p { margin-block-end: 1em; } // default
-          (_buttons.length > 1
-            ? +parseInt(_dialogButtonPaneStyleBefore.borderBottom) - // .dialog .buttonpane:before { border-bottom: 1px; }
-              parseInt(_dialogButtonPaneStyleBefore.top) + // .dialog .buttonpane:before { height: 0; top: -16px; }
-              parseInt(_dialogButtonPaneStyle.height) + // .dialog .buttonset button { height: 32px; }
-              parseInt(_dialogButtonPaneStyle.bottom) // .dialog .buttonpane { bottom: 16px; }
-            : 0)
-      );
-      _dialog.style.height = _minH + "px";
+      _dialog.style.width = 500 + "px";
+
+      //  minimal height
+
+      _dialog.style.height = 380 + "px";
 
       _setDialogContent();
 
