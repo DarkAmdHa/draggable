@@ -1,128 +1,56 @@
 <!DOCTYPE HTML>
 <html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-<!--meta http-equiv="refresh" content="1;url="-->
-<title>Draggable and Risizable Dialog Box</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<title>Draggable and Risizable Dialog Box</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+		<link href="https://unpkg.com/video.js@6.7.1/dist/video-js.css" rel="stylesheet">
+		<link rel="stylesheet" href="draggable-resizable-dialog.css">
 
-<link href="https://unpkg.com/video.js@6.7.1/dist/video-js.css" rel="stylesheet">
-<link rel="stylesheet" href="draggable-resizable-dialog.css">
+	</head>
+	<body>
+		<div class="container">
+			<div id="imgDraggable" onclick="showDialog();">
+				<img src="play.png" class="tutorial-img">
+			</div>
+		</div>
 
+		<div id="dialog" class="dialog" style="min-width:400px; min-height:280px;">
+			<div class="titlebar">Click and Drag to move</div>
+			<button name="close"><img src="close.png" width='25px'><p style="display:none;">-</p></button>
+			<div class="content">
+				<video-js id='vid1' width='600' height='300' class="vjs-default-skin" controls preload>
+					<source id='popSource'
+					src="https://vz-ad28bd3e-54f.b-cdn.net/eabbaafc-d35a-4efc-b36b-4dfbf24e4347/playlist.m3u8"
+					type="application/x-mpegURL">
+				</video-js>
+			</div>
+			<div class="pop">
+			<img src="popout.png" alt="Pop Out">
+		</div>
+		</div>
 
-<script src="https://unpkg.com/video.js@6.7.1/dist/video.js"></script>
-<script src="https://unpkg.com/@videojs/http-streaming@0.9.0/dist/videojs-http-streaming.js"></script>
-<script type="text/javascript" src="draggable-resizable-dialog.js"></script>
+		<script>
 
-<style>
-body {
-	width: 100vw;
-	height: 100vh;
-	font-family: Verdana, sans-serif;
-	font-size: 12px;
-	color: #333;
-	background: #eee;
-	margin: 0;
-	padding: 0;
-	overflow-x: hidden;
-}
-.show-button {
-	height: 36px;
-	font-size: 1.2em;
-	cursor: pointer;
-	color: #fff;
-	background: #39c;
-}
-.show-button:disabled {
-	cursor: default;
-	color: #aaa;
-	background: #069;
-}
-.status-bar {
-	width: 200px;
-	padding: 6px 8px;
-	font-size: 1.2em;
-	color: #fff;
-	background: #e80;
-	border: 1px solid #aaa;
-}
-.container{
-		text-align: center;
-	}
-	
-.tutorial-img{
-	width: 20%;
-	cursor: pointer;
-}
-</style>
-</head>
-<body>
-<div class="container">
-	<div id="imgDraggable" onclick="showDialog();">
-	   <img src="play.png" class="tutorial-img">
-	</div>
- </div>
+			document.querySelector('.pop').addEventListener('click', function() {   
+						player.pause();
+						var time = player.currentTime(); 
+						console.log(time);
+						setTimeout(() => {
+						document.getElementById('dialog').style.transform = "scale(0)";
+						}, 1);
+						setTimeout(() => {
+						document.getElementById('dialog').style.display = "none";
+						}, 400);
+						
+						window.open(`https://upbeat-shirley-2e1ceb.netlify.app/?t=${time}&link=${document.getElementById('popSource').src}`);
+						return true;
+					});
+		</script>
 
-
-
-<script>
-_playDialogButton = document.getElementById('imgDraggable');
-var dialog;
-function showDialog() {
-	_playDialogButton.disabled = true;
-	if (!dialog) {
-		var id = 'dialog';
-		// Instanciate the Dialog Box
-		dialog = new DialogBox(id, callbackDialog);
-	}
-	// Show Dialog Box
-	dialog.showDialog();
-
-	// Receive result from Dialog Box
-	function callbackDialog(btnName) {
-		_playDialogButton.disabled = false;
-		
-	}
-}
-</script>
-
-<div id="dialog" class="dialog" style="min-width:400px; min-height:280px;">
-	<div class="titlebar">Click and Drag to move</div>
-	<button name="close"><img src="close.png" width='25px'><p style="display:none;">-</p></button>
-	<div class="content">
-		<video-js id=vid1 width=600 height=300 class="vjs-default-skin" controls>
-			<source
-			   src="https://vz-ad28bd3e-54f.b-cdn.net/eabbaafc-d35a-4efc-b36b-4dfbf24e4347/playlist.m3u8"
-			   type="application/x-mpegURL">
-		  </video-js>
-
-		  <script>
-		  var player = videojs('vid1');
-		  console.log(player);
-		  </script>
-	</div>
-	<div class="pop">
-	<img src="popout.png" alt="Pop Out">
-</div>
-</div>
-
-<script>
-
-	document.querySelector('.pop').addEventListener('click', function() {   
-				 player.pause();
-                 var time = player.currentTime(); 
-                 console.log(time);
-				 setTimeout(() => {
-				document.getElementById('dialog').style.transform = "scale(0)";
-				}, 1);
-				setTimeout(() => {
-				document.getElementById('dialog').style.display = "none";
-				}, 400);
-
-                 window.open('https://www.youtube.com/watch?autoplay=1&v=T9CTbO0r-QE&t='+time+'s', 'window name', 'window settings');
-                 return true;
-            });
-</script>
-</body>
+		<script src="https://unpkg.com/video.js@6.7.1/dist/video.js"></script>
+		<script src="https://unpkg.com/@videojs/http-streaming@0.9.0/dist/videojs-http-streaming.js"></script>
+		<script type="text/javascript" src="draggable-resizable-dialog.js"></script>
+	</body>
 </html>
