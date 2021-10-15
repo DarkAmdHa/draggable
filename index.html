@@ -10,6 +10,7 @@
 
 	</head>
 	<body>
+		
 		<div class="container">
 			<div id="imgDraggable" onclick="showDialog();">
 				<img src="play.png" class="tutorial-img">
@@ -44,7 +45,7 @@
 						document.getElementById('dialog').style.display = "none";
 						}, 400);
 						
-						window.open(`https://upbeat-shirley-2e1ceb.netlify.app/?t=${time}&link=${document.getElementById('popSource').src}`);
+						window.open(`https://upbeat-shirley-2e1ceb.netlify.app/?t=${time}&link=${document.getElementById('popSource').src}`,'Video', "width=480,height=500,resizable=no,left=200,top=100" );
 						return true;
 					});
 		</script>
