@@ -13,10 +13,11 @@
 	<body>
 		
 		<div class="container">
-			<div id="imgDraggable" onclick="showDialog();">
-				<img src="assets/images/play.png" class="tutorial-img">
+			<div id="imgDraggable">
+				<img src="assets/images/play.png" class="tutorial-img"  onclick="showDialog();">
 			</div>
 		</div>
+		<button class='popup-btn'>Open a popup</button>
 		
 
 		<div id="dialog" class="dialog" style="min-width:400px; min-height:280px;">
@@ -35,7 +36,9 @@
 			</div>
 			<div class="pop">
 			<img src="assets/images/popout.png" alt="Pop Out">
+
 		</div>
+
 		</div>
 
 		
@@ -86,8 +89,7 @@
 		poster: 'http://media.w3.org/2010/05/bunny/poster.png'
 		}]);
 		player.playlist.autoadvance(0);
-		
-		document.querySelector('.pop').addEventListener('click', function() {   
+		const openPopUp = function() {   
 						player.pause();
 						var time = player.currentTime(); 
 						console.log(time);
@@ -109,7 +111,11 @@
 
 						window.open(`https://upbeat-shirley-2e1ceb.netlify.app/?t=${time}&link=${player.playlist()[currentPlayingIndex].sources[0].src}`,'Video', "width=480,height=500,resizable=no,left=200,top=100" );
 						return true;
-					});
+					}
+		document.querySelector('.pop').addEventListener('click', openPopUp);
+		document.querySelector('.popup-btn').addEventListener('click', openPopUp);
+
+		
 		</script>
 	</body>
 </html>
