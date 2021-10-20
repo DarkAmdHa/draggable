@@ -50,71 +50,70 @@
 		<script type="text/javascript" src="assets/js/draggable-resizable-dialog.js"></script>
 		<script>
 			var player = videojs("vid1"); //Video Player Object
+			player.playlistUi();//Instantiate the playlist UI
 			
-			player.playlistUi();
-			
+
+			//Takes in an array, with each element representing an object literal with the name description and more information of the video
+			//The source and type are the most important ones. Please consult the Video Js Doc for more info on what else you can add as info
 			player.playlist([{
 				name: 'Disney\'s Oceans 1',
-      description: 'Explore the depths of our planet\'s oceans. ' +
-        'Experience the stories that connect their world to ours. ' +
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ' +
-        'sed do eiusmod tempor incididunt ut labore et dolore magna ' +
-        'aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco ' +
-        'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure ' +
-        'dolor in reprehenderit in voluptate velit esse cillum dolore eu ' +
-        'fugiat nulla pariatur. Excepteur sint occaecat cupidatat non ' +
-        'proident, sunt in culpa qui officia deserunt mollit anim id est ' +
-        'laborum.',
-      duration: 45,
-		sources: [{
-			src: 'https://vz-ad28bd3e-54f.b-cdn.net/eabbaafc-d35a-4efc-b36b-4dfbf24e4347/playlist.m3u8',
-			type: 'application/x-mpegURL'
-		}],
-		thumbnail: [
-        {
-          srcset: 'https://themomentum.co/wp-content/uploads/2020/04/Thumbnail-Roche-test-kit.png',
-          type: 'image/jpeg',
-          media: '(min-width: 400px;)'
-        },
-        {
-          src: 'https://themomentum.co/wp-content/uploads/2020/04/Thumbnail-Roche-test-kit.png'
-        }
-      ],
-		poster: 'https://themomentum.co/wp-content/uploads/2020/04/Thumbnail-Roche-test-kit.png'
-		}, {
-		sources: [{
-			src: 'https://vz-ad28bd3e-54f.b-cdn.net/6e1cffce-7df5-4d22-97d4-b47f79a720e0/playlist.m3u8',
-			type: 'application/x-mpegURL'
-		}],
-		poster: 'http://media.w3.org/2010/05/bunny/poster.png'
+				description: 'Explore the depths of our planet\'s oceans. ' +
+					'Experience the stories that connect their world to ours. ',
+      			duration: 45,
+				sources: [{
+					src: 'https://vz-ad28bd3e-54f.b-cdn.net/eabbaafc-d35a-4efc-b36b-4dfbf24e4347/playlist.m3u8',
+					type: 'application/x-mpegURL'
+				}],
+				thumbnail: [
+				{
+				srcset: 'https://themomentum.co/wp-content/uploads/2020/04/Thumbnail-Roche-test-kit.png',
+				type: 'image/jpeg',
+				media: '(min-width: 400px;)'
+				},
+				{
+				src: 'https://themomentum.co/wp-content/uploads/2020/04/Thumbnail-Roche-test-kit.png'
+				}
+			],
+				poster: 'https://themomentum.co/wp-content/uploads/2020/04/Thumbnail-Roche-test-kit.png'
+				}, {
+				sources: [{
+					src: 'https://vz-ad28bd3e-54f.b-cdn.net/6e1cffce-7df5-4d22-97d4-b47f79a720e0/playlist.m3u8',
+					type: 'application/x-mpegURL'
+				}],
+				poster: 'http://media.w3.org/2010/05/bunny/poster.png'
 		}]);
-		player.playlist.autoadvance(0);
-		const openPopUp = function() {   
-						player.pause();
-						var time = player.currentTime(); 
-						console.log(time);
+			
+			player.playlist.autoadvance(0);
+
+			//This function runs when the "click to open pop up button is pressed"
+			const openPopUp = function() {   
+						player.pause();//the video is paused
+						var time = player.currentTime(); //Getting the currrent time of the video
 						setTimeout(() => {
-						document.getElementById('dialog').style.transform = "scale(0)";
+						document.getElementById('dialog').style.transform = "scale(0)";//Animation to close the draggable window
 						}, 1);
 						setTimeout(() => {
 						document.getElementById('dialog').style.display = "none";
 						}, 400);
 						let playlistItems = document.querySelectorAll('.vjs-playlist-item');
-						let currentPlayingIndex = 0;
+						let currentPlayingIndex = 0;//This is in order to find the ID of the current playing video in the playlist, which can also be provided in the query string, so that the exact same video plays on the pop up
+						
 						playlistItems.forEach((item,index)=>{
 							if(item.classList.contains('vjs-selected')){
 								currentPlayingIndex = index;
 							}
 						});
-						console.log(player.playlist()[currentPlayingIndex].sources[0].src);
-
-
-						window.open(`https://upbeat-shirley-2e1ceb.netlify.app/?t=${time}&link=${player.playlist()[currentPlayingIndex].sources[0].src}`,'Video', "width=480,height=500,resizable=no,left=200,top=100" );
+						//Enter the name of the playlist you'd like opened on the popup window
+						const playlistToOpen = 'courses';
+						//You can also provide the time and the id(index) of the video you'd like played in the playlist
+						//PS: Ids of Videos in playlists start from 0, and are consecutive(0,1,2,3), if you provide a number bigger than the number ofvideos in the playlist, the last video will be played 
+						//Please change the link "https://upbeat-shirley-2e1ceb.netlify.app/" to whatever page you'll be hosting the pop up player on as that is a simple static netlify site
+						window.open(`https://upbeat-shirley-2e1ceb.netlify.app/?t=${time}&playlist=${playlistToOpen}&currentPlayingId=${currentPlayingIndex}`,'Video', "width=480,height=500,resizable=no,left=200,top=100" );
 						return true;
 					}
 		document.querySelector('.pop').addEventListener('click', openPopUp);
 		document.querySelector('.popup-btn').addEventListener('click', openPopUp);
-
+					
 		
 		</script>
 	</body>
