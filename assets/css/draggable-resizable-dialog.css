@@ -9,18 +9,7 @@ body {
   padding: 0;
   overflow-x: hidden;
 }
-.show-button {
-  height: 36px;
-  font-size: 1.2em;
-  cursor: pointer;
-  color: #fff;
-  background: #39c;
-}
-.show-button:disabled {
-  cursor: default;
-  color: #aaa;
-  background: #069;
-}
+
 .status-bar {
   width: 200px;
   padding: 6px 8px;
@@ -63,7 +52,7 @@ body {
 }
 .dialog .content {
   position: absolute;
-  top: 48px; /* change allowed */
+  top: 32px; /* change allowed */
   left: 16px; /* change NOT allowed */
   overflow: auto;
   font-size: 1em;
@@ -71,11 +60,6 @@ body {
   flex-wrap: wrap;
   justify-content: space-between;
   height: 85%;
-}
-
-.dialog .content iframe {
-  width: 100% !important;
-  height: 94% !important;
 }
 
 .dialog .buttonset {
