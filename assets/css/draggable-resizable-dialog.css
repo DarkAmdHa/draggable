@@ -121,20 +121,3 @@ body {
 .preview-player-dimensions.vjs-fluid {
   padding-top: 41.66666666666667%;
 }
-
-.popup-btn {
-  border: none;
-  background-color: rgb(113, 197, 186);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.5s ease;
-}
-
-.popup-btn:hover {
-  background-color: rgb(98, 175, 165);
-}
-.popup-btn:focus {
-  transform: scale(0.9);
-}
