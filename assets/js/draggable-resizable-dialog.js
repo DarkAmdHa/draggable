@@ -409,13 +409,11 @@ function DialogBox(id, callback) {
         h =
           _dialog.clientHeight -
           (parseInt(_dialogContentStyle.top) + // .dialog .content { top: 48px }
-            16); // Ensure to get minimal height
+            16) -
+          20; // Ensure to get minimal height
+      console.log(h);
       _dialogContent.style.width = w + "px";
       _dialogContent.style.height = h + "px";
-
-      if (_dialogButtonPane)
-        // The buttonpane is optional
-        _dialogButtonPane.style.width = w + "px";
 
       _dialogTitle.style.width = w - 16 + "px";
     }),
